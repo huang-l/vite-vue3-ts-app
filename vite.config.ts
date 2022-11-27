@@ -5,6 +5,14 @@ import postcsspxtoviewport from 'postcss-px-to-viewport';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000/', //代理，接口重写
+        rewrite: (path) => path.replace(/^\/api/, ''), //不需传/api
+      },
+    },
+  },
   css: {
     postcss: {
       plugins: [
