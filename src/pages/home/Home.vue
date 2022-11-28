@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { getBanner, getSongList } from '../../api/modules/home';
+import { getBanner, getSongList } from '@/api/modules/home';
 import { reactive, onMounted } from 'vue';
+import { formatNumber } from '@/util/common';
 const state = reactive({
   images: [],
   songList: <
@@ -20,7 +21,6 @@ onMounted(() => {
   });
   getSongList().then((res: any) => {
     if (!res?.result?.length) return;
-    console.log(res.result);
     state.songList = res.result.map((item: any) => ({
       id: item.id,
       playCount: item.playCount,
@@ -49,14 +49,18 @@ onMounted(() => {
     <div class="song-list">
       <div class="list-header">
         <span class="header-title">发现好歌单</span>
-        <span>查看更多</span>
+        <van-button size="small">查看更多</van-button>
       </div>
       <div class="list-content">
         <van-swipe :loop="false" :width="150" :show-indicators="false">
           <van-swipe-item v-for="item in state.songList" :key="item.id">
-            <img :src="item.src" />
-            <span class="play-count">{{ item.playCount }}</span>
-            <span class="song-name">{{ item.name }}</span>
+            <router-link :to="`/songDetail?id=${item.id}`">
+              <img :src="item.src" />
+              <span class="play-count">
+                <van-icon name="play" />{{ formatNumber(item.playCount) }}
+              </span>
+              <span class="song-name">{{ item.name }}</span>
+            </router-link>
           </van-swipe-item>
         </van-swipe>
       </div>
@@ -95,7 +99,7 @@ onMounted(() => {
   .song-list {
     padding-top: 30px;
     .list-header {
-      height: 30px;
+      height: 50px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -116,10 +120,11 @@ onMounted(() => {
           position: absolute;
           right: 2px;
           top: 2px;
-          color: #fff;
+          color: #ccc;
         }
         .song-name {
           font-size: 12px;
+          color: #000;
         }
       }
     }
