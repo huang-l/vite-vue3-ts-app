@@ -1,16 +1,29 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { reactive } from 'vue';
 
 // 名称同时以 use 开头且以 Store 结尾 (比如 `useUserStore`，`useCartStore`，`useProductStore`)
-export const useCountStore = defineStore(
+export const usePlayListStore = defineStore(
   'main',
   () => {
-    const count = ref(0);
-    function increment() {
-      count.value++;
-    }
+    const state = reactive({
+      playList: [
+        {
+          al: {
+            id: 90525175,
+            name: '生活限定手册',
+            pic: 109951165050432620,
+            picUrl:
+              'https://p2.music.126.net/Z47IFngOl_t1pVCh1PHL_w==/109951165050432631.jpg',
+            pic_str: '109951165050432631',
+          },
+          id: 1455273374,
+        },
+      ],
+      playIndex: 0,
+      isPlay: false,
+    });
 
-    return { count, increment };
+    return { state };
   },
   {
     persist: {

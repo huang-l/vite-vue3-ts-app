@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TopNav from './TopNav.vue';
 import { getBanner, getSongList } from '@/api/modules/home';
 import { reactive, onMounted } from 'vue';
 import { formatNumber } from '@/util/common';
@@ -32,6 +33,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <TopNav />
   <div class="home-wrapper">
     <div class="swiper-image">
       <van-swipe :autoplay="3000" lazy-render>

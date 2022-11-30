@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import TopNav from './TopNav.vue';
+import Footer from './Footer.vue';
 </script>
 
 <template>
-  <TopNav />
   <router-view></router-view>
+  <Footer />
 </template>

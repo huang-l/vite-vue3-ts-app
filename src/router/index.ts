@@ -6,9 +6,12 @@ const routes = [
   {
     path: '/',
     component: Layout,
-    children: [{ path: '', component: Home }],
+    children: [
+      { path: '', component: Home },
+      { path: '/songDetail', component: SongDetail },
+    ],
   },
-  { path: '/songDetail', component: SongDetail },
+
   // 将匹配所有内容并将其放在 `$route.params.pathMatch` 下
   {
     path: '/:pathMatch(.*)*',

@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { defineProps, onMounted } from 'vue';
+import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 import { formatNumber } from '@/util/common';
-const props = defineProps(['playList']);
+defineProps(['playList']);
 const router = useRouter();
 const backTo = () => {
   router.back();
 };
-onMounted(() => {
-  console.log(props);
-});
 </script>
 
 <template>
@@ -81,7 +78,7 @@ onMounted(() => {
   }
   .top-img {
     width: 100%;
-    height: 500px;
+    height: 600px;
     position: fixed;
     z-index: -1;
     filter: blur(30px);
