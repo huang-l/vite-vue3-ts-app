@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { usePlayListStore } from '@/store';
 import { useRoute } from 'vue-router';
 import { onMounted, reactive } from 'vue';
 import { getSongDetail, getSongList } from '@/api/modules/songDetail';
 import DetailTop from './DetailTop.vue';
+const store = usePlayListStore();
 const state = reactive({
   playList: { subscribedCount: 0 },
   songList: <
     Array<{ name: string; mv: number; ar: Array<{ name: string }> }>
   >[],
+  list: <Array<{ id: number; al: any }>>[], //存储到全部的播放列表
 });
 onMounted(() => {
   const { id } = useRoute().query;
@@ -24,8 +27,21 @@ onMounted(() => {
       mv: item.mv,
       ar: item.ar,
     }));
+    state.list = res.songs.map((item: any) => ({
+      id: item.id,
+      al: item.al,
+    }));
   });
 });
+// 点击播放全部 将播放列表存入并播放第一首歌
+const handleClick = () => {
+  store.changePlayList(state.list);
+  store.changePlayIndex(0);
+};
+// 点击其中一首
+const clickOne = (index: number) => {
+  store.changePlayIndex(index);
+};
 </script>
 
 <template>
@@ -33,7 +49,7 @@ onMounted(() => {
   <div class="detail-content">
     <div class="detail-content-header">
       <span>
-        <van-icon name="play-circle-o" />
+        <van-icon name="play-circle-o" @click="handleClick" />
         <span class="head-text"
           >播放全部<span class="song-num"
             >(共{{ state.songList.length }}首)</span
@@ -49,6 +65,7 @@ onMounted(() => {
         class="list-item"
         v-for="(item, index) in state.songList"
         :key="index"
+        @click="clickOne(index)"
       >
         <div class="item-left">
           <span class="order">{{ index + 1 }}</span>

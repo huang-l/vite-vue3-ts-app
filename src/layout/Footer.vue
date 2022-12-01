@@ -1,17 +1,49 @@
 <script setup lang="ts">
 import { usePlayListStore } from '@/store';
-import { ref } from 'vue';
+import { reactive, ref, watch, onMounted } from 'vue';
 const store = usePlayListStore();
-const playInfo = store.state.playList[store.state.playIndex];
+const state = reactive({
+  playInfo: <{ id: number; al: any }>{},
+});
 const audio: any = ref(null);
+watch(
+  [() => store.state.playList, () => store.state.playIndex],
+  ([newList, newIndex], [oldList, oldIndex]) => {
+    if (
+      JSON.stringify(newList) === JSON.stringify(oldList) &&
+      newIndex === oldIndex
+    ) {
+      return;
+    }
+    state.playInfo = newList[newIndex];
+    if (audio.value) {
+      audio.value.autoplay = true;
+      if (audio.value.paused) {
+        store.changeIsPlay(true);
+      }
+    }
+  },
+  { immediate: true, deep: true }
+);
+onMounted(() => {
+  if (audio.value) {
+    audio.value.addEventListener('ended', () => {
+      const index =
+        store.state.playIndex === store.state.playList.length - 1
+          ? 0
+          : store.state.playIndex + 1;
+      store.changePlayIndex(index);
+    });
+  }
+});
 const startPlay = () => {
   if (audio.value) {
     if (audio.value.paused) {
       audio.value.play();
-      store.state.isPlay = true;
+      store.changeIsPlay(true);
     } else {
       audio.value.pause();
-      store.state.isPlay = false;
+      store.changeIsPlay(false);
     }
   }
 };
@@ -20,9 +52,9 @@ const startPlay = () => {
 <template>
   <div class="footer">
     <div class="footer-left">
-      <img class="footer-img" :src="playInfo.al.picUrl" />
+      <img class="footer-img" :src="state.playInfo.al.picUrl" />
       <div class="song-info">
-        <div class="name">{{ playInfo.al.name }}</div>
+        <div class="name">{{ state.playInfo.al.name }}</div>
         <span>横滑切换上下首哦</span>
       </div>
     </div>
@@ -37,7 +69,7 @@ const startPlay = () => {
     </div>
     <audio
       ref="audio"
-      :src="`https://music.163.com/song/media/outer/url?id=${playInfo.id}.mp3`"
+      :src="`https://music.163.com/song/media/outer/url?id=${state.playInfo.id}.mp3`"
     ></audio>
   </div>
 </template>

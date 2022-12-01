@@ -23,7 +23,21 @@ export const usePlayListStore = defineStore(
       isPlay: false,
     });
 
-    return { state };
+    const changePlayList = (newList: any) => {
+      if (JSON.stringify(newList) !== JSON.stringify(state.playList)) {
+        state.playList = newList;
+      }
+    };
+
+    const changePlayIndex = (index: number) => {
+      index !== state.playIndex && (state.playIndex = index);
+    };
+
+    const changeIsPlay = (isPlay: boolean) => {
+      isPlay !== state.isPlay && (state.isPlay = isPlay);
+    };
+
+    return { state, changePlayList, changePlayIndex, changeIsPlay };
   },
   {
     persist: {
