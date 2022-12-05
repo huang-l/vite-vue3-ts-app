@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-const activeKey = ref('my');
+import { ref } from "vue";
+const activeKey = ref("my");
 </script>
 
 <template>

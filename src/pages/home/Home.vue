@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import TopNav from './TopNav.vue';
-import { getBanner, getSongList } from '@/api/modules/home';
-import { reactive, onMounted } from 'vue';
-import { formatNumber } from '@/util/common';
+import TopNav from "./TopNav.vue";
+import { getBanner, getSongList } from "@/api/modules/home";
+import { reactive, onMounted } from "vue";
+import { formatNumber } from "@/util/common";
 const state = reactive({
   images: [],
   songList: <
@@ -10,10 +10,10 @@ const state = reactive({
   >[],
 });
 const list = reactive([
-  { name: 'good-job-o', label: '每日推荐' },
-  { name: 'video-o', label: '私人FM' },
-  { name: 'service-o', label: '歌单' },
-  { name: 'bar-chart-o', label: '排行榜' },
+  { name: "good-job-o", label: "每日推荐" },
+  { name: "video-o", label: "私人FM" },
+  { name: "service-o", label: "歌单" },
+  { name: "bar-chart-o", label: "排行榜" },
 ]);
 onMounted(() => {
   getBanner().then((res: any) => {

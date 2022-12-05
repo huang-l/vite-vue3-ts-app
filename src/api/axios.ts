@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
 // 定义请求与响应拦截
 const service = axios.create({
-  baseURL: '/api',
+  baseURL: "/api",
   timeout: 10000,
   headers: {
-    'Content-type': 'application/json; charset=utf-8',
-    'cache-control': 'no-cache',
-    Pragma: 'no-cache',
+    "Content-type": "application/json; charset=utf-8",
+    "cache-control": "no-cache",
+    Pragma: "no-cache",
   },
 });
 

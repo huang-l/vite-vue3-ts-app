@@ -1,9 +1,9 @@
-import axios from '../axios';
+import axios from "../axios";
 
 // 获取歌单详情
 export const getSongDetail = (id: string) =>
   axios({
-    method: 'get',
+    method: "get",
     url: `/playList/detail?id=${id}`,
   });
 
@@ -14,7 +14,7 @@ export const getSongList = (params: {
   offset: number;
 }) =>
   axios({
-    method: 'get',
-    url: `/playList/track/all`,
+    method: "get",
+    url: "/playList/track/all",
     params,
   });

@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { usePlayListStore } from '@/store';
-import { useRoute } from 'vue-router';
-import { onMounted, reactive } from 'vue';
-import { getSongDetail, getSongList } from '@/api/modules/songDetail';
-import DetailTop from './DetailTop.vue';
+import { usePlayListStore } from "@/store";
+import { useRoute } from "vue-router";
+import { onMounted, reactive } from "vue";
+import { getSongDetail, getSongList } from "@/api/modules/songDetail";
+import DetailTop from "./DetailTop.vue";
 const store = usePlayListStore();
 const state = reactive({
   playList: { subscribedCount: 0 },
   songList: <
-    Array<{ name: string; mv: number; ar: Array<{ name: string }> }>
+    Array<{
+      id: number;
+      name: string;
+      mv: number;
+      ar: Array<{ name: string }>;
+      picUrl: string;
+    }>
   >[],
-  list: <Array<{ id: number; al: any }>>[], //存储到全部的播放列表
 });
 onMounted(() => {
   const { id } = useRoute().query;
@@ -23,23 +28,34 @@ onMounted(() => {
   getSongList(params).then((res: any) => {
     if (!res?.songs?.length) return;
     state.songList = res.songs.map((item: any) => ({
+      id: item.id,
       name: item.name,
       mv: item.mv,
       ar: item.ar,
-    }));
-    state.list = res.songs.map((item: any) => ({
-      id: item.id,
-      al: item.al,
+      picUrl: item.al.picUrl,
     }));
   });
 });
 // 点击播放全部 将播放列表存入并播放第一首歌
 const handleClick = () => {
-  store.changePlayList(state.list);
+  store.changePlayList(
+    state.songList.map((item) => ({
+      id: item.id,
+      name: item.name,
+      picUrl: item.picUrl,
+    }))
+  );
   store.changePlayIndex(0);
 };
 // 点击其中一首
 const clickOne = (index: number) => {
+  store.changePlayList(
+    state.songList.map((item) => ({
+      id: item.id,
+      name: item.name,
+      picUrl: item.picUrl,
+    }))
+  );
   store.changePlayIndex(index);
 };
 </script>

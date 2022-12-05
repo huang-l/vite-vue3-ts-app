@@ -1,33 +1,30 @@
 <script setup lang="ts">
-import { usePlayListStore } from '@/store';
-import { reactive, ref, watch, onMounted } from 'vue';
+import { usePlayListStore } from "@/store";
+import { reactive, ref, watch, onMounted } from "vue";
 const store = usePlayListStore();
 const state = reactive({
-  playInfo: <{ id: number; al: any }>{},
+  playInfo: <{ id: number; name: string; picUrl: string }>{},
 });
 const audio: any = ref(null);
 watch(
   [() => store.state.playList, () => store.state.playIndex],
-  ([newList, newIndex], [oldList, oldIndex]) => {
-    if (
-      JSON.stringify(newList) === JSON.stringify(oldList) &&
-      newIndex === oldIndex
-    ) {
-      return;
-    }
+  ([newList, newIndex]) => {
     state.playInfo = newList[newIndex];
     if (audio.value) {
-      audio.value.autoplay = true;
       if (audio.value.paused) {
+        audio.value.play();
         store.changeIsPlay(true);
       }
+      audio.value.currentTime = 0;
+      audio.value.autoplay = true;
     }
   },
   { immediate: true, deep: true }
 );
 onMounted(() => {
+  store.changeIsPlay(false);
   if (audio.value) {
-    audio.value.addEventListener('ended', () => {
+    audio.value.addEventListener("ended", () => {
       const index =
         store.state.playIndex === store.state.playList.length - 1
           ? 0
@@ -50,11 +47,11 @@ const startPlay = () => {
 </script>
 
 <template>
-  <div class="footer">
+  <div class="footer" v-if="state.playInfo">
     <div class="footer-left">
-      <img class="footer-img" :src="state.playInfo.al.picUrl" />
+      <img class="footer-img" :src="state.playInfo.picUrl" />
       <div class="song-info">
-        <div class="name">{{ state.playInfo.al.name }}</div>
+        <div class="name">{{ state.playInfo.name }}</div>
         <span>横滑切换上下首哦</span>
       </div>
     </div>
@@ -83,6 +80,7 @@ const startPlay = () => {
   box-shadow: 0 -1px 1px #ccc;
   background: #fff;
   padding: 0 10px;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;

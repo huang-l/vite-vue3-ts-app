@@ -1,33 +1,24 @@
-import { defineStore } from 'pinia';
-import { reactive } from 'vue';
+import { defineStore } from "pinia";
+import { reactive } from "vue";
 
 // 名称同时以 use 开头且以 Store 结尾 (比如 `useUserStore`，`useCartStore`，`useProductStore`)
 export const usePlayListStore = defineStore(
-  'main',
+  "main",
   () => {
     const state = reactive({
       playList: [
         {
-          al: {
-            id: 90525175,
-            name: '生活限定手册',
-            pic: 109951165050432620,
-            picUrl:
-              'https://p2.music.126.net/Z47IFngOl_t1pVCh1PHL_w==/109951165050432631.jpg',
-            pic_str: '109951165050432631',
-          },
           id: 1455273374,
+          name: "生活限定手册",
+          picUrl:
+            "https://p2.music.126.net/Z47IFngOl_t1pVCh1PHL_w==/109951165050432631.jpg",
         },
       ],
       playIndex: 0,
       isPlay: false,
     });
 
-    const changePlayList = (newList: any) => {
-      if (JSON.stringify(newList) !== JSON.stringify(state.playList)) {
-        state.playList = newList;
-      }
-    };
+    const changePlayList = (newList: any) => (state.playList = newList);
 
     const changePlayIndex = (index: number) => {
       index !== state.playIndex && (state.playIndex = index);
