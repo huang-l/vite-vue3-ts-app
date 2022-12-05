@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { usePlayListStore } from "@/store";
 import { reactive, ref, watch, onMounted } from "vue";
+import MusicDetail from "./MusicDetail.vue";
 const store = usePlayListStore();
 const state = reactive({
   playInfo: <{ id: number; name: string; picUrl: string }>{},
@@ -44,11 +45,14 @@ const startPlay = () => {
     }
   }
 };
+const showDetail = () => {
+  store.changeDetailShow(true);
+};
 </script>
 
 <template>
   <div class="footer" v-if="state.playInfo">
-    <div class="footer-left">
+    <div class="footer-left" @click="showDetail">
       <img class="footer-img" :src="state.playInfo.picUrl" />
       <div class="song-info">
         <div class="name">{{ state.playInfo.name }}</div>
@@ -68,6 +72,12 @@ const startPlay = () => {
       ref="audio"
       :src="`https://music.163.com/song/media/outer/url?id=${state.playInfo.id}.mp3`"
     ></audio>
+    <van-popup
+      v-model:show="store.state.isShowDetail"
+      position="right"
+      :style="{ height: '100%', width: '100%' }"
+      ><MusicDetail />
+    </van-popup>
   </div>
 </template>
 

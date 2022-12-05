@@ -16,6 +16,7 @@ export const usePlayListStore = defineStore(
       ],
       playIndex: 0,
       isPlay: false,
+      isShowDetail: false,
     });
 
     const changePlayList = (newList: any) => (state.playList = newList);
@@ -28,7 +29,18 @@ export const usePlayListStore = defineStore(
       isPlay !== state.isPlay && (state.isPlay = isPlay);
     };
 
-    return { state, changePlayList, changePlayIndex, changeIsPlay };
+    const changeDetailShow = (isShowDetail: boolean) => {
+      isShowDetail !== state.isShowDetail &&
+        (state.isShowDetail = isShowDetail);
+    };
+
+    return {
+      state,
+      changePlayList,
+      changePlayIndex,
+      changeIsPlay,
+      changeDetailShow,
+    };
   },
   {
     persist: {
