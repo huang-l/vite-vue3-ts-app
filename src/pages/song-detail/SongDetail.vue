@@ -12,7 +12,7 @@ const state = reactive({
       id: number;
       name: string;
       mv: number;
-      ar: Array<{ name: string }>;
+      auth: string;
       picUrl: string;
     }>
   >[],
@@ -31,7 +31,7 @@ onMounted(() => {
       id: item.id,
       name: item.name,
       mv: item.mv,
-      ar: item.ar,
+      auth: item.ar.map((item: { name: string }) => item.name).join(" "),
       picUrl: item.al.picUrl,
     }));
   });
@@ -43,6 +43,7 @@ const handleClick = () => {
       id: item.id,
       name: item.name,
       picUrl: item.picUrl,
+      auth: item.auth,
     }))
   );
   store.changePlayIndex(0);
@@ -54,6 +55,7 @@ const clickOne = (index: number) => {
       id: item.id,
       name: item.name,
       picUrl: item.picUrl,
+      auth: item.auth,
     }))
   );
   store.changePlayIndex(index);
@@ -87,7 +89,7 @@ const clickOne = (index: number) => {
           <span class="order">{{ index + 1 }}</span>
           <div class="item-info">
             <div class="item-name">{{ item.name }}</div>
-            <span v-for="(ite, i) in item.ar" :key="i">{{ ite.name }}</span>
+            <span>{{ item.auth }}</span>
           </div>
         </div>
         <div class="item-right">

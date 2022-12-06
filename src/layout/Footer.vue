@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { usePlayListStore } from "@/store";
-import { reactive, ref, watch, onMounted } from "vue";
+import { reactive, ref, watch, onMounted, onUpdated } from "vue";
 import MusicDetail from "./MusicDetail.vue";
 const store = usePlayListStore();
 const state = reactive({
-  playInfo: <{ id: number; name: string; picUrl: string }>{},
+  playInfo: <{ id: number; name: string; picUrl: string; auth: string }>{},
 });
 const audio: any = ref(null);
 watch(
@@ -34,7 +34,10 @@ onMounted(() => {
     });
   }
 });
-const startPlay = () => {
+onUpdated(() => {
+  store.getLyric(state.playInfo.id);
+});
+const play = () => {
   if (audio.value) {
     if (audio.value.paused) {
       audio.value.play();
@@ -60,12 +63,8 @@ const showDetail = () => {
       </div>
     </div>
     <div class="footer-right">
-      <van-icon
-        @click="startPlay"
-        name="play-circle-o"
-        v-if="!store.state.isPlay"
-      />
-      <van-icon @click="startPlay" name="pause-circle-o" v-else />
+      <van-icon @click="play" name="play-circle-o" v-if="!store.state.isPlay" />
+      <van-icon @click="play" name="pause-circle-o" v-else />
       <van-icon class="bars" name="bars" />
     </div>
     <audio
@@ -76,7 +75,11 @@ const showDetail = () => {
       v-model:show="store.state.isShowDetail"
       position="right"
       :style="{ height: '100%', width: '100%' }"
-      ><MusicDetail />
+      ><MusicDetail
+        :playInfo="state.playInfo"
+        :play="play"
+        :isPlay="store.state.isPlay"
+      />
     </van-popup>
   </div>
 </template>

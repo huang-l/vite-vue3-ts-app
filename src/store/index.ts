@@ -1,3 +1,4 @@
+import { getSongLyric } from "@/api/modules/songDetail";
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
@@ -8,15 +9,17 @@ export const usePlayListStore = defineStore(
     const state = reactive({
       playList: [
         {
-          id: 1455273374,
-          name: "生活限定手册",
+          id: 527354000,
+          auth: "十指流玉",
+          name: "春风再美也比不上你的笑,没见过你的人自然不会明了。(Demo)",
           picUrl:
-            "https://p2.music.126.net/Z47IFngOl_t1pVCh1PHL_w==/109951165050432631.jpg",
+            "https://p2.music.126.net/3bs7NZugy1tMOuM-R-Adpg==/109951163096544864.jpg",
         },
       ],
       playIndex: 0,
       isPlay: false,
       isShowDetail: false,
+      lyric: "[99:00.00]纯音乐，请欣赏",
     });
 
     const changePlayList = (newList: any) => (state.playList = newList);
@@ -34,12 +37,18 @@ export const usePlayListStore = defineStore(
         (state.isShowDetail = isShowDetail);
     };
 
+    const getLyric = async (id: number) => {
+      const res: any = await getSongLyric(id);
+      state.lyric = res.lrc.lyric;
+    };
+
     return {
       state,
       changePlayList,
       changePlayIndex,
       changeIsPlay,
       changeDetailShow,
+      getLyric,
     };
   },
   {

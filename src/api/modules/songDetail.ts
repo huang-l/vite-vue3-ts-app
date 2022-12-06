@@ -18,3 +18,9 @@ export const getSongList = (params: {
     url: "/playList/track/all",
     params,
   });
+// 获取歌单内歌曲歌词
+export const getSongLyric = (id: number) =>
+  axios({
+    method: "get",
+    url: `/lyric?id=${id}`,
+  });
