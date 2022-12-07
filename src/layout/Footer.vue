@@ -51,6 +51,14 @@ const play = () => {
 const showDetail = () => {
   store.changeDetailShow(true);
 };
+const updateCurrentTime = (e: { target: { currentTime: number } }) => {
+  const currentTime = e.target.currentTime;
+  store.updateCurrentTime(currentTime);
+};
+const updateDuration = (e: { target: { duration: number } }) => {
+  const duration = e.target.duration;
+  store.updateDuration(duration);
+};
 </script>
 
 <template>
@@ -70,6 +78,8 @@ const showDetail = () => {
     <audio
       ref="audio"
       :src="`https://music.163.com/song/media/outer/url?id=${state.playInfo.id}.mp3`"
+      @timeupdate="updateCurrentTime"
+      @durationchange="updateDuration"
     ></audio>
     <van-popup
       v-model:show="store.state.isShowDetail"

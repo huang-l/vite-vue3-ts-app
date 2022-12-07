@@ -20,6 +20,8 @@ export const usePlayListStore = defineStore(
       isPlay: false,
       isShowDetail: false,
       lyric: "[99:00.00]纯音乐，请欣赏",
+      currentTime: 0, //歌曲播放当前时间
+      duration: 0, //歌曲时长
     });
 
     const changePlayList = (newList: any) => (state.playList = newList);
@@ -42,6 +44,13 @@ export const usePlayListStore = defineStore(
       state.lyric = res.lrc.lyric;
     };
 
+    const updateCurrentTime = (currentTime: number) => {
+      state.currentTime = currentTime;
+    };
+    const updateDuration = (duration: number) => {
+      state.duration = duration;
+    };
+
     return {
       state,
       changePlayList,
@@ -49,6 +58,8 @@ export const usePlayListStore = defineStore(
       changeIsPlay,
       changeDetailShow,
       getLyric,
+      updateCurrentTime,
+      updateDuration,
     };
   },
   {
